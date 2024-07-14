@@ -1,15 +1,30 @@
+import { plugin } from "bun";
 import { Elysia } from "elysia";
 
 
+// Define plugin
+
+const plugin = new Elysia()
+.state('plugin-version',1)
+.get('/form-plugin',() => "hi")
+.get('/greet',() =>"hello dev" )
+
+
+//Application
 const app = new Elysia().get("/", () => "Build Elysia RESTFUL API")
-  .state('version', 1)
+.use(plugin)
+  .state({
+    id:1,
+    email:"elysia@gmail.com",
+  })
   .decorate('getDate', () => Date.now())
   .get('/post/:id', ({ params: { id } }) => {
     return {
       id: id,
       title: "Bun Restful API"
     }
-  }).post('/post', ({ body, set }) => {
+  }).post('/post', ({ body, set,store }) => {
+    console.log(store)
     set.status = 201
     return body
   })
@@ -25,7 +40,7 @@ const app = new Elysia().get("/", () => "Build Elysia RESTFUL API")
     //   headers: { "Content-Type": "application/json" }, 
     // })
     console.log(store)
-    console.log(getDate)
+    console.log(getDate())
     return {
       "tracks": [
         "Sorairo Days",
