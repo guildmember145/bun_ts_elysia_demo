@@ -5,8 +5,22 @@ const app = new Elysia().get("/", () => "Build Elysia RESTFUL API")
 .get('/post/:id',({params: {id}}) =>{return {
    id:id,
    title: "Bun Restful API"
-  }}).post('/post',(body)=>{return body})
+  }}).post('/post',({body,set})=>{
+    set.status = 201
+    return body
+  })
 .get('/track/*',() => {return 'Track Route'})
+.get('/tracks/',() => {
+  return new Response(JSON.stringify({
+    "tracks":[
+      "Sorairo Days",
+      "Soldier Dream",
+      "Abyss"
+  ]
+  }))
+
+})
+
 .listen(3000);
 
 
